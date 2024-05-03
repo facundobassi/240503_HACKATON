@@ -1,5 +1,10 @@
 import streamlit as st
 
+st.image("VibezAl-horizontal with text.svg", width=200)
+
+# Add the app name in the sidebar
+st.sidebar.image("VibezAl-horizontal with text.svg", width=100)
+
 st.markdown("""
 ## How to Use the Content Creator
 
