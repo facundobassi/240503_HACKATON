@@ -18,7 +18,7 @@ st.sidebar.image("VibezAl-horizontal with text.svg", width=100)
 project_id = "lognos-agent"
 location = "us-central1"
 GOOGLE_API_KEY="63cd3fbc304ab37f4ba3dd838c6cd38cb9e50eb5"
-vertexai.configure(api_key=GOOGLE_API_KEY)
+#vertexai.configure(api_key=GOOGLE_API_KEY)
 
 vertexai.init(project=project_id, location=location)
 
