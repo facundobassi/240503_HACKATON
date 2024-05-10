@@ -6,6 +6,11 @@ from vertexai.preview.vision_models import Image, ImageGenerationModel
 from IPython.display import Image
 import streamlit as st
 import time
+import json
+import os
+from google.oauth2.service_account import Credentials
+
+from google.cloud import aiplatform
 
 st.set_page_config(layout="wide")
 # Add the app name in the header
@@ -14,7 +19,28 @@ st.image("VibezAl-horizontal with text.svg", width=200)
 
 # Add the app name in the sidebar
 st.sidebar.image("VibezAl-horizontal with text.svg", width=100)
-# TODO(developer): Update and un-comment below lines
+
+
+#Authentication on server
+if st.toggle("Deployed app", False):
+
+# Get the JSON string from environment variable
+    service_account_key_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON')
+
+    # Replace \\n and \" back to newlines and double quotes
+    service_account_key_json = service_account_key_json.replace('\\n', '\n').replace('\\"', '"')
+
+    # Parse the JSON string back to a dictionary
+    service_account_key = json.loads(service_account_key_json, strict=False)
+
+    # Create credentials from the service account key
+    credentials = Credentials.from_service_account_info(service_account_key)
+
+    # Use the credentials
+    client = aiplatform.gapic.PredictionServiceClient(credentials=credentials)
+
+
+
 project_id = "lognos-agent"
 location = "us-central1"
 
@@ -24,7 +50,6 @@ model = GenerativeModel("gemini-1.0-pro")
 if "chat" not in st.session_state:
     st.session_state.chat = model.start_chat()
 
-#@title Use Vertex to generate an image
 model2 = ImageGenerationModel.from_pretrained("imagegeneration@005")
 
 def get_chat_response(chat: ChatSession, prompt: str):
@@ -110,8 +135,7 @@ with col1:
 
                     # Execute the line of code
                     st.session_state.prompt_image = get_chat_response(st.session_state.chat, st.session_state.pre_prompt_image)
-
-                    bar_text_variable.text("Image prompt generated!")
+                    progress_bar.empty()
 
     if "response2" in st.session_state:
         # Add assistant message to chat history
@@ -125,12 +149,32 @@ with col2:
         
         if st.session_state.create_image:
             with col22:
-                st.session_state.images = model2.generate_images(prompt=st.session_state.prompt_image)
-                st.session_state.images[0].save(location="./gen-img1.png", include_generation_parameters=True)
-                
-                st.image('./gen-img1.png', use_column_width="always")
+                try:
+                    bar_text_variable = st.text("Working on the image...")
+                    for i in range(100):
+                        progress_bar.progress(i + 1)
+                        time.sleep(0.01)
+
+                    st.session_state.images = model2.generate_images(prompt=st.session_state.prompt_image)
+                    st.session_state.images[0].save(location="./gen-img1.png", include_generation_parameters=True)
+                    progress_bar.empty()
+
+                    st.image('./gen-img1.png', use_column_width="always")
+                except:
+                    st.warning("The generated content may violate Gemini models policies. Please try regenerating the image.")
 
             with col22:
                 if st.button("Regenerate image"):
+                    try:
+                        bar_text_variable = st.text("Reworking the image...")
+                        for i in range(100):
+                            progress_bar.progress(i + 1)
+                            time.sleep(0.01)
+                        
                         st.session_state.images = model2.generate_images(prompt=st.session_state.prompt_image)
+                        progress_bar.empty()
                         st.session_state.images[0].save(location="./gen-img1.png", include_generation_parameters=True)
+                    except:
+                        st.warning("Sorry. The generated content may violate Gemini models policies. Please refresh and review your prompts.")
+        #                 st.image('./gen-img1.png', use_column_width="always")
+        # st.image('./gen-img1.png', use_column_width="always")    

@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+lognos-agent-63cd3fbc304a.json
+transformer.py
+.streamlit/secrets.toml
+
 # User-specific files
 *.rsuser
 *.suo

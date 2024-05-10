@@ -9,7 +9,7 @@ st.image("VibezAl-horizontal with text.svg", width=200)
 # Add the app name in the sidebar
 st.sidebar.image("VibezAl-horizontal with text.svg", width=100)
 
-# TODO(developer): Update and un-comment below lines
+
 project_id = "lognos-agent"
 location = "us-central1"
 vertexai.init(project=project_id, location=location)
