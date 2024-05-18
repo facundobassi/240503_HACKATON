@@ -6,6 +6,7 @@
 lognos-agent-63cd3fbc304a.json
 transformer.py
 .streamlit/secrets.toml
+aux.txt
 
 # User-specific files
 *.rsuser

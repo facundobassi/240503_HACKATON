@@ -38,13 +38,14 @@ if st.toggle("Deployed app", False):
 
     # Use the credentials
     client = aiplatform.gapic.PredictionServiceClient(credentials=credentials)
+    # st.write(client)
 
 
 
 project_id = "lognos-agent"
 location = "us-central1"
 
-vertexai.init(project=project_id, location=location)
+vertexai.init(project=project_id, location=location, credentials=credentials)
 
 model = GenerativeModel("gemini-1.0-pro")
 if "chat" not in st.session_state:
