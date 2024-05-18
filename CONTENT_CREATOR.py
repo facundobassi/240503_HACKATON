@@ -21,24 +21,24 @@ st.image("VibezAl-horizontal with text.svg", width=200)
 st.sidebar.image("VibezAl-horizontal with text.svg", width=100)
 
 
-#Authentication on server
-if st.toggle("Deployed app", False):
+# #Authentication on server
+# if st.toggle("Deployed app", False):
 
 # Get the JSON string from environment variable
-    service_account_key_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON')
+service_account_key_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON')
 
-    # Replace \\n and \" back to newlines and double quotes
-    service_account_key_json = service_account_key_json.replace('\\n', '\n').replace('\\"', '"')
+# Replace \\n and \" back to newlines and double quotes
+service_account_key_json = service_account_key_json.replace('\\n', '\n').replace('\\"', '"')
 
-    # Parse the JSON string back to a dictionary
-    service_account_key = json.loads(service_account_key_json, strict=False)
+# Parse the JSON string back to a dictionary
+service_account_key = json.loads(service_account_key_json, strict=False)
 
-    # Create credentials from the service account key
-    credentials = Credentials.from_service_account_info(service_account_key)
+# Create credentials from the service account key
+credentials = Credentials.from_service_account_info(service_account_key)
 
-    # Use the credentials
-    client = aiplatform.gapic.PredictionServiceClient(credentials=credentials)
-    # st.write(client)
+# Use the credentials
+client = aiplatform.gapic.PredictionServiceClient(credentials=credentials)
+# st.write(client)
 
 
 
