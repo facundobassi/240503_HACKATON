@@ -69,11 +69,17 @@ col1, col2 = st.columns([5, 5])
 st.session_state.platforms_list = ['Twitter', 'Facebook', 'Instagram', 'LinkedIn', 'Pinterest', 'email marketing', 'Reddit']
 st.session_state.tones_list = ['Engaging', 'Informative', 'Funny', 'Argumentative', 'Sarcastic']
 st.session_state.target_audiences_list = ['General Public', 'Specific Demographics', 'Niche Communities']
+st.session_state.age_groups_list = ['All','Children', 'Teenagers', 'Young Adults', 'Adults', 'Seniors']
+st.session_state.gender_list = ['All', 'Male', 'Female', 'Non-binary']
+st.session_state.niche_communities_list = ['All', 'Tech', 'Fashion', 'Food', 'Travel', 'Fitness', 'Health', 'Finance', 'Education', 'Entertainment', 'Sports', 'Politics', 'Religion', 'Science', 'Environment', 'Lifestyle', 'Parenting', 'Pets', 'Art', 'Music', 'Movies', 'Books', 'Gaming', 'Beauty', 'DIY', 'Crafts', 'Photography', 'Cars', 'Real Estate', 'Home Decor', 'Gardening', 'Mental Health', 'Dating', 'Career', 'Business', 'Marketing', 'Social Media', 'News', 'History', 'Culture', 'Language', 'Fashion', 'Shopping', 'Design', 'Architecture', 'Engineering', 'Agriculture', 'Legal', 'Medicine', 'Psychology', 'Sociology', 'Philosophy', 'Literature', 'Writing', 'Journalism', 'Public Relations', 'Advertising', 'Sales', 'Customer Service', 'Human Resources', 'Management', 'Leadership', 'Productivity', 'Motivation', 'Inspiration', 'Self-improvement', 'Self-care', 'Self-love', 'Self-esteem', 'Self-confidence', 'Self-discipline', 'Self-awareness', 'Self-regulation', 'Self-control', 'Self-compassion', 'Self-acceptance', 'Self-forgiveness', 'Self-empowerment', 'Self-realization', 'Self-actual']
 st.session_state.lengths_list = ['Short (50-70 words)','Medium (100-120 words)', 'Long (200-250 words)', 'X/Tweet Max (280 characters)']
 st.session_state.hashtags_options_list = ['Include', 'Exclude', 'Specific Hashtags']
 st.session_state.emotions_list = ['Exciting','Happiness', 'Sadness', 'Anger', 'Fear', 'Surprise']
 st.session_state.call_to_actions_list = ['Share', 'Like', 'Comment', 'Debate', 'Donate']
 
+st.session_state.age_group = 'All'
+st.session_state.gender = 'All'
+st.session_state.niche_community = 'All'
 
 with col1:
     with st.expander("PREFERENCES", expanded=True):
@@ -88,6 +94,11 @@ with col1:
         col11, col12 = st.columns([1, 1])
         with col11:
             st.session_state.target_audience = st.selectbox("Target Audience", st.session_state.target_audiences_list)
+            if st.session_state.target_audience == "Specific Demographics":
+                    st.session_state.age_group = st.selectbox("Age Group", st.session_state.age_groups_list, index=0)
+                    st.session_state.gender = st.selectbox("Gender", st.session_state.gender_list, index=0)
+            elif st.session_state.target_audience == "Niche Communities":
+                    st.session_state.niche_community = st.selectbox("Niche Community", st.session_state.niche_communities_list, index=0 )
             st.session_state.tone = st.selectbox("Tone", st.session_state.tones_list)
             st.session_state.call_to_action = st.selectbox("Call to Action", st.session_state.call_to_actions_list)           
         
@@ -108,7 +119,7 @@ with col1:
             if st.session_state.create_image:
                 st.session_state.user_image_prompt = st.text_input("Tell us more about the image...", label_visibility= "visible")
 
-            st.session_state.context = f"Create a post considering the following parameters: Tone: {st.session_state.tone}\nTarget Audience: {st.session_state.target_audience}\nLength: {st.session_state.length}\nEmotion: {st.session_state.emotion}\nCall to Action: {st.session_state.call_to_action}\nHashtags: {st.session_state.hashtags_option} and use {st.session_state.custom_hashtags}\n. Start the response with the post title and do not mention it is a post. Subject and additional context: "
+            st.session_state.context = f"Create a post considering the following parameters: Tone: {st.session_state.tone}\nTarget Audience: {st.session_state.target_audience} (Gender:{st.session_state.gender}; age group: {st.session_state.age_group}; niche community: {st.session_state.niche_community} )\nLength: {st.session_state.length}\nEmotion: {st.session_state.emotion}\nCall to Action: {st.session_state.call_to_action}\nHashtags: {st.session_state.hashtags_option} and use {st.session_state.custom_hashtags}\n. Start the response with the post title and do not mention it is a post. Subject and additional context: "
 
         colb11, colb12 = st.columns([1, 1])
         # Create a progress bar
